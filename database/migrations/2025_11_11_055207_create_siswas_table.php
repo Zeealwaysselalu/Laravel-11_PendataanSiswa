@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('nama_lengkap');
             $table->enum('jenis_kelamin', ['L', 'P']);
             $table->date('tanggal_lahir')->nullable();
-            $table->unsignedBigInteger('kelas_id');
+
 
 
             //ini adalah foreign key
@@ -25,6 +25,8 @@ return new class extends Migration
                 ->nullable()
                 ->constrained('kelas')
                 ->onDelete('set Null');
+
+
             $table->timestamps();
         });
     }

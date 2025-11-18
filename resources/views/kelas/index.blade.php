@@ -22,10 +22,7 @@
                     <td>{{ $kelas->nama_kelas }}</td>
                     <td>{{ $kelas->wali_kelas }}</td>
                     <td>
-                        <a href="{{ route('kelas.edit', $kelas->id) }}" class="btn
-
-btn-warning btn-sm">Edit</a>
-
+                        <a href="{{ route('kelas.edit', $kelas->id) }}" class="btnbtn-warning btn-sm">Edit</a>
                         <form action="{{ route('kelas.destroy', $kelas->id) }}" method="POST" class="d-inline">
                             @csrf
                             @method('DELETE')
