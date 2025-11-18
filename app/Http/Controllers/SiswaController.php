@@ -13,62 +13,82 @@ class SiswaController extends Controller
     {
         // Ambil data siswa DAN data kelas terkait (Eager Loading)
         $dataSiswa = Siswa::with('kelas')->get();
-        return view('siswa.index', ['semuaSiswa' => $dataSiswa]);
+
+        return view('siswa.index', [
+            'semuaSiswa' => $dataSiswa
+        ]);
     }
+
     // CREATE (Form Tambah)
     public function create()
     {
-        // Ambil semua data kelas untuk ditampilkan di dropdown
+        // Ambil semua data kelas untuk dropdown
         $dataKelas = Kelas::all();
-        return view('siswa.create', ['semuaKelas' => $dataKelas]);
+
+        return view('siswa.create', [
+            'semuaKelas' => $dataKelas
+        ]);
     }
+
     // STORE (Proses Simpan)
     public function store(Request $request)
     {
         $request->validate([
-            'nis' => 'required|string|unique:siswa,nis|max:10',
+            'nis' => 'required|string|unique:siswas,nis|max:10', // FIX
             'nama_lengkap' => 'required|string|max:255',
             'jenis_kelamin' => 'required|in:L,P',
             'kelas_id' => 'required|exists:kelas,id',
             'alamat' => 'nullable|string',
             'tanggal_lahir' => 'nullable|date',
         ]);
+
         Siswa::create($request->all());
-        return redirect()->route('siswa.index')->with('success', 'Data siswa berhasil
-ditambahkan.');
+
+        return redirect()->route('siswa.index')
+            ->with('success', 'Data siswa berhasil ditambahkan.');
     }
-    // SHOW (Detail) - Boleh diskip
+
+    // SHOW (optional)
     public function show(Siswa $siswa)
     {
         //
     }
-    // EDIT (Form Ubah)
+
+    // EDIT
     public function edit(Siswa $siswa)
     {
-        $dataKelas = Kelas::all(); // Data kelas untuk dropdown
+        $dataKelas = Kelas::all();
+
         return view('siswa.edit', [
             'siswa' => $siswa,
             'semuaKelas' => $dataKelas
         ]);
     }
-    // UPDATE (Proses Ubah)
+
+    // UPDATE
     public function update(Request $request, Siswa $siswa)
     {
         $request->validate([
-            'nis' => 'required|string|max:10|unique:siswa,nis,' . $siswa->id,
+            'nis' => 'required|string|max:10|unique:siswas,nis,' . $siswa->id, // FIX
             'nama_lengkap' => 'required|string|max:255',
             'jenis_kelamin' => 'required|in:L,P',
             'kelas_id' => 'required|exists:kelas,id',
             'alamat' => 'nullable|string',
             'tanggal_lahir' => 'nullable|date',
         ]);
+
         $siswa->update($request->all());
-        return redirect()->route('siswa.index')->with('success', 'Data siswa berhasil diubah.');
+
+        return redirect()->route('siswa.index')
+            ->with('success', 'Data siswa berhasil diubah.');
     }
-    // DELETE (Proses Hapus)
+
+    // DELETE
     public function destroy(Siswa $siswa)
     {
         $siswa->delete();
-        return redirect()->route('siswa.index')->with('success', 'Data siswa berhasil dihapus.');
+
+        return redirect()->route('siswa.index')
+            ->with('success', 'Data siswa berhasil dihapus.');
     }
 }
